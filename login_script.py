@@ -59,7 +59,7 @@ async def login(username, password, panel):
         return is_logged_in
 
     except Exception as e:
-        print(f'{serviceName}账号 {username} 登录时出现错误: {e}')
+        print(f'{serviceName}账号 {username} 登录时出现错误: {e}\n')
         return False
 
     finally:
@@ -68,14 +68,14 @@ async def login(username, password, panel):
 
 async def main():
     global message
-    message = 'serv00&ct8自动化脚本运行\n'
+    message = 'serv00&ct8自动化脚本运行报告\n\n'
 
     try:
         async with aiofiles.open('accounts.json', mode='r', encoding='utf-8') as f:
             accounts_json = await f.read()
         accounts = json.loads(accounts_json)
     except Exception as e:
-        print(f'读取 accounts.json 文件时出错: {e}')
+        print(f'读取 accounts.json 文件时出错: {e}\n')
         return
 
     for account in accounts:
@@ -89,12 +89,12 @@ async def main():
         if is_logged_in:
             now_utc = format_to_iso(datetime.utcnow())
             now_beijing = format_to_iso(datetime.utcnow() + timedelta(hours=8))
-            success_message = f'{serviceName}账号 {username} 于北京时间 {now_beijing}（UTC时间 {now_utc}）登录成功！'
+            success_message = f'{serviceName}账号 {username} 于北京时间 {now_beijing}（UTC时间 {now_utc}）登录成功！\n'
             message += success_message + '\n'
             print(success_message)
         else:
             message += f'{serviceName}账号 {username} 登录失败，请检查{serviceName}账号和密码是否正确。\n'
-            print(f'{serviceName}账号 {username} 登录失败，请检查{serviceName}账号和密码是否正确。')
+            print(f'{serviceName}账号 {username} 登录失败，请检查{serviceName}账号和密码是否正确。\n')
 
         delay = random.randint(1000, 8000)
         await delay_time(delay)
